@@ -1,17 +1,24 @@
 import React from "react";
+
 import Product from "./Product";
-import { useState } from "react";
+
 import Title from "./Title";
-import { storeProducts } from "../data";
+
+import { useGlobalContext } from "../context";
 
 const ProductList = () => {
-  const [products, setProducts] = useState([storeProducts]);
+  const { products } = useGlobalContext();
+
   return (
     <React.Fragment>
       <div className="py-5">
         <div className="container">
           <Title name="our" title="products" />
-          <div className="row"></div>
+          <div className="row">
+            {products.map((product) => {
+              return <Product key={product.id} product={product} />;
+            })}
+          </div>
         </div>
       </div>
     </React.Fragment>
