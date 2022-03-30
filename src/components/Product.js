@@ -6,7 +6,7 @@ import { useGlobalContext } from "../context";
 
 const Product = ({ product }) => {
   const { id, title, img, price, inCart } = product;
-  const { handleDetail, addToCart } = useGlobalContext();
+  const { handleDetail, addToCart, openModal } = useGlobalContext();
   return (
     <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
       <div className="card">
@@ -23,6 +23,7 @@ const Product = ({ product }) => {
             className="cart-btn"
             disabled={inCart ? true : false}
             onClick={() => {
+              openModal(id);
               addToCart(id);
             }}
           >
