@@ -30,8 +30,12 @@ const AppProvider = ({ children }) => {
     const index = tempCart.indexOf(selectedProduct);
     const product = tempCart[index];
     product.count = product.count - 1;
-    product.total = product.count * product.price;
-    setCart([...tempCart]);
+    if (product.count === 0) {
+      removeItem(id);
+    } else {
+      product.total = product.count * product.price;
+      setCart([...tempCart]);
+    }
   };
   const removeItem = (id) => {
     let tempProducts = [...products];
@@ -58,7 +62,7 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     addTotals();
-  }, [cart]);
+  });
 
   useEffect(() => {
     let products = [];
@@ -122,7 +126,7 @@ const AppProvider = ({ children }) => {
         detailProd,
         handleDetail,
         addToCart,
-
+        children,
         cart,
         openModal,
         closeModal,
