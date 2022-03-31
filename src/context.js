@@ -7,7 +7,7 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [detailProd, setDetailProd] = useState(detailProduct);
-  const [inCart, setInCart] = useState(false);
+
   const [cart, setCart] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalProduct, setModalProduct] = useState(detailProduct);
@@ -16,21 +16,57 @@ const AppProvider = ({ children }) => {
   const [cartTotal, setCartTotal] = useState(0);
 
   const increaseQuantity = (id) => {
-    console.log("increase");
+    let tempCart = [...cart];
+    const selectedProduct = tempCart.find((item) => item.id === id);
+    const index = tempCart.indexOf(selectedProduct);
+    const product = tempCart[index];
+    product.count = product.count + 1;
+    product.total = product.count * product.price;
+    setCart([...tempCart]);
   };
   const decreaseQuantity = (id) => {
-    console.log("decrease");
+    let tempCart = [...cart];
+    const selectedProduct = tempCart.find((item) => item.id === id);
+    const index = tempCart.indexOf(selectedProduct);
+    const product = tempCart[index];
+    product.count = product.count - 1;
+    product.total = product.count * product.price;
+    setCart([...tempCart]);
   };
   const removeItem = (id) => {
-    console.log("removed");
+    let tempProducts = [...products];
+    let tempCart = [...cart];
+    tempCart = tempCart.filter((item) => item.id !== id);
+    const index = tempProducts.indexOf(getItem(id));
+    let removedProduct = tempProducts[index];
+    removedProduct.inCart = false;
+    removedProduct.count = 0;
+    removedProduct.total = 0;
+    setCart(tempCart);
+    setProducts([...tempProducts, removedProduct]);
   };
 
   const clearCart = () => {
-    console.log("cleared");
+    setCart([]);
+    let products = [];
+    storeProducts.forEach((item) => {
+      const singleItem = { ...item };
+      products = [...products, singleItem];
+    });
+    setProducts(products);
   };
 
   useEffect(() => {
-    setProducts(storeProducts);
+    addTotals();
+  }, [cart]);
+
+  useEffect(() => {
+    let products = [];
+    storeProducts.forEach((item) => {
+      const singleItem = { ...item };
+      products = [...products, singleItem];
+    });
+    setProducts(products);
   }, []);
 
   const getItem = (id) => {
@@ -52,6 +88,20 @@ const AppProvider = ({ children }) => {
     setModalOpen(false);
   };
 
+  const addTotals = () => {
+    let subTotal = 0;
+    cart.map((item) => {
+      subTotal += item.total;
+      return subTotal;
+    });
+    const tempTax = subTotal * 0.1;
+    const tax = parseFloat(tempTax.toFixed(2));
+    const total = subTotal + tax;
+    setCartSubTotal(subTotal);
+    setCartTax(tax);
+    setCartTotal(total);
+  };
+
   const addToCart = (id) => {
     let tempProducts = [...products];
     const index = tempProducts.indexOf(getItem(id));
@@ -61,7 +111,7 @@ const AppProvider = ({ children }) => {
     const price = product.price;
     product.total = price;
     setProducts(tempProducts);
-    setInCart(true);
+    setDetailProd(product);
     setCart([...cart, product]);
   };
 
@@ -72,7 +122,7 @@ const AppProvider = ({ children }) => {
         detailProd,
         handleDetail,
         addToCart,
-        inCart,
+
         cart,
         openModal,
         closeModal,
@@ -82,6 +132,9 @@ const AppProvider = ({ children }) => {
         decreaseQuantity,
         clearCart,
         removeItem,
+        cartSubTotal,
+        cartTax,
+        cartTotal,
       }}
     >
       {children}

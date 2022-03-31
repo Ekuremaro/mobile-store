@@ -5,8 +5,8 @@ import { ButtonContainer } from "./Button";
 
 const Details = () => {
   const {
-    detailProd: { id, company, title, img, price, info },
-    inCart,
+    detailProd: { inCart, id, company, title, img, price, info },
+
     addToCart,
   } = useGlobalContext();
 

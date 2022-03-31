@@ -3,6 +3,8 @@ import Title from "../Title";
 import CartColumns from "./CartColumns";
 import EmptyCart from "./EmptyCart";
 import { useGlobalContext } from "../../context";
+import CartList from "./CartList";
+import CartTotal from "./CartTotal";
 
 const Cart = () => {
   const { cart } = useGlobalContext();
@@ -12,6 +14,8 @@ const Cart = () => {
       <React.Fragment>
         <Title name="your" title="cart" />
         <CartColumns />
+        <CartList />
+        <CartTotal />
       </React.Fragment>
     );
   } else {

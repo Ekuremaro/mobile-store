@@ -32,7 +32,7 @@ const Modal = () => {
               </Link>
               <Link to="/cart">
                 <ButtonContainer onClick={closeModal} cart>
-                  add to cart
+                  go to cart
                 </ButtonContainer>
               </Link>
             </div>
