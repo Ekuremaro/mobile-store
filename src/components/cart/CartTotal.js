@@ -1,10 +1,12 @@
 import React from "react";
 import { useGlobalContext } from "../../context";
 import { Link } from "react-router-dom";
+import PaypalButton from "./PaypalButton";
+import { useNavigate } from "react-router-dom";
 
 const CartTotal = () => {
   const { clearCart, cartSubTotal, cartTax, cartTotal } = useGlobalContext();
-
+  const navigate = useNavigate();
   return (
     <React.Fragment>
       <div className="container-fluid">
@@ -33,6 +35,11 @@ const CartTotal = () => {
               <span className="text-title">total :</span>{" "}
               <strong>$ {cartTotal}</strong>
             </h5>
+            <PaypalButton
+              total={cartTotal}
+              clear={clearCart}
+              navigate={navigate}
+            />
           </div>
         </div>
       </div>
